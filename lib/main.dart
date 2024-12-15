@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Ques_Bank.dart';
 
-
 void main() => runApp(Quizzler());
 
 Question_Bank QB = Question_Bank();
@@ -11,10 +10,10 @@ class Quizzler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: Colors.blueGrey.shade900, // Dark background
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 15.0),
             child: QuizPage(),
           ),
         ),
@@ -32,99 +31,117 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center, // Center elements vertically
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        // Question Text
         Expanded(
-          flex: 5,
+          flex: 4,
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(20.0),
             child: Center(
               child: Text(
                 QB.getQues(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 25.0,
+                  fontSize: 28.0,  // Increased font size
+                  fontWeight: FontWeight.bold, // Bold font
                   color: Colors.white,
                 ),
               ),
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  shape: const BeveledRectangleBorder(
-                      borderRadius: BorderRadius.zero)
-              ),
-              child: const Text(
-                'True',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  QB.nextIcon(true);
-                  Alerts();
-                });
-                //The user picked false.
-              },
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: const BeveledRectangleBorder(
-                      borderRadius: BorderRadius.zero)
-              ),
-              child: const Text(
-                'False',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  QB.nextIcon(false);
-                  Alerts();
-                });
-                //The user picked false.
-              },
 
+        // Buttons (True/False)
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // True Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 35.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: const Text(
+                      'True',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        QB.nextIcon(true);
+                        Alerts();
+                      });
+                    },
+                  ),
+                ),
+
+                // False Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 35.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: const Text(
+                      'False',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        QB.nextIcon(false);
+                        Alerts();
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
+
+        // Score icons (correct/incorrect)
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: QB.getIcon(),
         ),
       ],
     );
   }
+
   void Alerts(){
     if(QB.item == 13) {
       showDialog(
         context: context,
-        builder: (context) =>  CustomDialogWidget(),
-    );
+        builder: (context) => const CustomDialogWidget(),
+      );
     }
   }
 }
 
-
+// Custom Dialog Widget for result screen
 class CustomDialogWidget extends StatefulWidget {
-const CustomDialogWidget({super.key});
+  const CustomDialogWidget({super.key});
 
   @override
   State<CustomDialogWidget> createState() => _CustomDialogWidgetState();
@@ -133,7 +150,6 @@ const CustomDialogWidget({super.key});
 class _CustomDialogWidgetState extends State<CustomDialogWidget> {
   @override
   Widget build(BuildContext context) {
-
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Stack(
@@ -152,17 +168,11 @@ class _CustomDialogWidgetState extends State<CustomDialogWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 QB.img(),
-                const SizedBox(
-                  height: 24,
-                ),
+                const SizedBox(height: 24),
                 QB.Msg(),
-                const SizedBox(
-                  height: 4,
-                ),
+                const SizedBox(height: 4),
                 QB.SubMsg(),
-                const SizedBox(
-                  height: 32,
-                ),
+                const SizedBox(height: 32),
                 rowwing(),
               ],
             ),
@@ -181,7 +191,7 @@ class _CustomDialogWidgetState extends State<CustomDialogWidget> {
                 shape: const CircleBorder(),
                 backgroundColor: Colors.red,
               ),
-              child: const Icon(Icons.close_rounded),
+              child: const Icon(Icons.close_rounded, size: 16),
             ),
           ),
         ],
@@ -189,70 +199,48 @@ class _CustomDialogWidgetState extends State<CustomDialogWidget> {
     );
   }
 
-Row rowwing(){
-  if(QB.right >  QB.wrong){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        restart(),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.black,
-              padding:  const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 10,
-              ),
-              shape: BeveledRectangleBorder(
-                borderRadius: BorderRadius.circular(2),),
-            ),
-            onPressed: (){
-              setState(() {
-                showDialog(
-                  context: context,
-                  builder: (context) =>  const surprise()
-                );
-              });
-            }, child: const Text('Surprise'))
-      ],
-    );
+  Row rowwing() {
+    if(QB.right > QB.wrong){
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          restart(),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [restart()],
+      );
+    }
   }
-  else{
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        restart()
-      ],
-    );
-  }
-}
-ElevatedButton restart(){
+
+  ElevatedButton restart() {
     return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.black,
-          padding:  const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 10,
-          ),
-          shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(2),),
-        ),onPressed: (){
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      onPressed: () {
         setState(() {
-        QB.right = 0;
-        QB.wrong = 0;
-        QB.getIcon().clear();
-        QB.item = 0;
-        QB.Scorer.clear();
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Quizzler()));
-      });
-    },
-    child: const Text('Try Again'));
+          QB.right = 0;
+          QB.wrong = 0;
+          QB.getIcon().clear();
+          QB.item = 0;
+          QB.Scorer.clear();
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Quizzler()));
+        });
+      },
+      child: const Text('Try Again', style: TextStyle(fontSize: 16)),
+    );
+  }
 }
 
-}
-
+// Surprise Dialog
 class surprise extends StatefulWidget {
   const surprise({super.key});
 
@@ -265,54 +253,13 @@ class _surpriseState extends State<surprise> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 32,
-          vertical: 16,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         margin: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Image(
-                image: AssetImage('images/cry.png'),
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.black,
-                  padding:  const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 32,
-                  ),
-                  shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),),
-                ),onPressed: (){
-              setState(() {
-                QB.right = 0;
-                QB.wrong = 0;
-                QB.getIcon().clear();
-                QB.item = 0;
-                QB.Scorer.clear();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Quizzler()));
-              });
-            },
-                child: const Text('Try Again')
-            )
-          ],
-        ),
       ),
     );
   }
 }
-
-
-
-
-
-
-

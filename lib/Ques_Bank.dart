@@ -77,10 +77,10 @@ class Question_Bank{
 
   Image img(){
     if(right > wrong ){
-      return Image.asset('images/emojo.png');
+      return Image.asset('images/sponge.png');
     }
     else{
-      return Image.asset('images/cry.png');
+      return Image.asset('images/ang.png');
     }
   }
 
@@ -107,7 +107,7 @@ class Question_Bank{
   Text SubMsg(){
     if(right>wrong){
       return Text(
-        'You are going to be the next einstein',
+        'You are going to be a great singer!',
         textAlign: TextAlign.center,
         style: GoogleFonts.poppins(
           fontWeight: FontWeight.bold,
@@ -117,7 +117,7 @@ class Question_Bank{
     }
     else{
       return Text(
-        'Your IQ is lower than 25',
+        'what are you? grade 2?',
         textAlign: TextAlign.center,
         style: GoogleFonts.poppins(
           fontWeight: FontWeight.bold,
